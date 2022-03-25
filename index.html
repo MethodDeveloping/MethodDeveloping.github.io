@@ -47,10 +47,65 @@ function getData(type, url) {
   });
 }
 
-
+/*
 getData('post', 'https://www.qcgenerators.com/au').then(function(response) {
-	console.log("f");
+	console.log(response);
 });
+*/
+
+function getSheetData(sid, sName = null, t = null){
+	return new Promise(function(resolve, reject) {
+    // Do the usual XHR stuff
+    let req = new XMLHttpRequest();
+	//req.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded'); -Name and value, one row for each
+
+
+	let formData = new FormData();
+
+	formData.append("sid",sid);
+	if(t){
+		formData.append("type",t);
+	}
+	if(sName){
+		formData.append("sheet",sName);
+	}
+
+	req.open('POST', "https://www.qcgenerators.com/api/CallSheetsApi", true);
+	//req.setRequestHeader('Content-Type', 'application/json'); //-Name and value, one row for each
+	//req.setRequestHeader('cache-control', 'no-cache, must-revalidate, post-check=0, pre-check=0');
+	//req.setRequestHeader('cache-control', 'max-age=0');
+
+    req.onload = function() {
+      // This is called even on 404 etc
+      // so check the status
+      if (req.status == 200) {
+        // Resolve the promise with the response text
+        resolve(req.response);
+      }
+      else {
+        // Otherwise reject with the status text
+        // which will hopefully be a meaningful error
+        reject(Error(req.statusText));
+      }
+    };
+
+    // Handle network errors
+    req.onerror = function() {
+      reject(Error("Network Error"));
+    };
+
+    // Make the request
+
+    formData.append("uat_vcfs", '6173646661646164617364');
+    req.send(formData);
+
+	//req.send(encodeURI('name=' + newName));
+  });
+}
+
+getSheetData('1LQXz9WHL9hE9Sgo5cTwjCsnywdChpoCt4AQU-__ROfQ','Suffix-Key%2FStorage%2FHand-Item_IDS')
+
+    .then(function(response) { console.log(response) });
 </script>
 <body>
 <h1>Hello World</h1>
