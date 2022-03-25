@@ -25,6 +25,7 @@ function getData(type, url) {
         // Otherwise reject with the status text
         // which will hopefully be a meaningful error
         reject(Error(req.statusText));
+		console.log("GET FUCKED");
       }
 
 
@@ -46,7 +47,7 @@ function getData(type, url) {
   });
 }
 
-console.log("TEST");
+
 getData('post', 'https://www.qcgenerators.com/au').then(function(response) {
 	console.log(response);
 });
